@@ -29,13 +29,10 @@ class Game
       # puts "#{@@turn.name}'s turn end"
       return @@turn = player1
     end
-
   end
 
   def print_stats
-
     puts "Player #{player1.name}: #{player1.lives}/3 vs Player #{player2.name}: #{player2.lives}/3"
-
     turn_end
   end
 
@@ -54,11 +51,13 @@ class Game
   def check_points
     if (player1.lives == 0)
       @@continue = false
+      puts "--- GAME OVER ---"
       puts "Player 2 wins with a score of #{player2.lives}/3"
       puts "Goodbye"
       return false
     elsif (player2.lives == 0)
       @@continue = false
+      puts "--- GAME OVER ---"
       puts "Player 1 wins with a score of #{player1.lives}/3"
       puts "Goodbye"
       return false
@@ -70,9 +69,11 @@ class Game
     @@continue = true
     while @@continue
       ask_question
-      print_stats
       @@continue = check_points
+      if (@@continue)
+        print_stats
+      end
     end #end while
   end #start
-  
+
 end
