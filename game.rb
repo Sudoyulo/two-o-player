@@ -6,9 +6,8 @@ class Game
     @player1 = p1
     @player2 = p2
     @@turn= @player1
-    puts "hello #{player1.name} and #{player2.name}"
+    # puts "hello #{player1.name} and #{player2.name}"
   end
-
 
   def generate_question (player)
     @@random_number_a = rand(10)
@@ -19,23 +18,7 @@ class Game
     # puts "It's #{@@answer}"
     @@random_number_a + @@random_number_b
   end
-
-  def turn_end
-    puts "--- NEW TURN ---"
-    if (@@turn.name == player1.name)
-      # puts "#{@@turn.name}'s turn end"
-      return @@turn = player2
-    else
-      # puts "#{@@turn.name}'s turn end"
-      return @@turn = player1
-    end
-  end
-
-  def print_stats
-    puts "Player #{player1.name}: #{player1.lives}/3 vs Player #{player2.name}: #{player2.lives}/3"
-    turn_end
-  end
-
+  
   def ask_question
     @@answer = generate_question(@@turn)
     @@guess = @@turn.guess
@@ -47,32 +30,44 @@ class Game
       @@turn.lose_life
     end
   end
+  
+  def check_points(player)
 
-  def check_points
-    if (player1.lives == 0)
-      @@continue = false
-      puts "--- GAME OVER ---"
-      puts "Player 2 wins with a score of #{player2.lives}/3"
+    if (player.lives == 0)
+      puts "xxx GAME OVER xxx"
+      turn_end
+      puts "Player #{@@turn.name} wins with a score of #{@@turn.lives}/3"
       puts "Goodbye"
       return false
-    elsif (player2.lives == 0)
-      @@continue = false
-      puts "--- GAME OVER ---"
-      puts "Player 1 wins with a score of #{player1.lives}/3"
-      puts "Goodbye"
-      return false
+    else
+      print_stats
+      return true
     end
-    true
+  end
+
+  def turn_end
+    
+    if (@@turn.name == player1.name)
+      # puts "#{@@turn.name}'s turn end"
+      return @@turn = player2
+    else
+      # puts "#{@@turn.name}'s turn end"
+      return @@turn = player1
+    end
+  end
+
+  def print_stats
+    puts "Player #{player1.name}: #{player1.lives}/3 vs Player #{player2.name}: #{player2.lives}/3"
+    puts ""
+    turn_end
   end
 
   def start
     @@continue = true
     while @@continue
+      puts "--- NEW TURN ---"
       ask_question
-      @@continue = check_points
-      if (@@continue)
-        print_stats
-      end
+      @@continue = check_points(@@turn)
     end #end while
   end #start
 
